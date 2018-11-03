@@ -79,12 +79,26 @@ router.get('/deletenote/:id', function(req, res) {
     console.log('deleted note is', note);
     res.redirect('/viewnote')
   });
-})
+});
 
-router.put('/editnote/:id',function(req,res){
-  Notes.find({_id: req.params.id}),edit();
+router.get('/editnote/:id', function(req, res) {
+  Notes.findOne({_id: req.params.id}, function(err, note) {
+    console.log('edited note is', note);
+    res.render('editnote',{note});
+  });
+});
 
-})
+router.post('/editnote', function(req, res) {
+  Notes.findOneAndUpdate({_id: req.body._id}, {$set: req.body},(err,note)=>{
+    console.log('note updated', note);
+    if(!err) res.redirect('/viewnote')
+  });
+});
+
+// router.put('/editnote/:id',function(req,res){
+//   Notes.find({_id: req.params.id}),edit();
+//
+// })
 
 
 // app.get('/'.function (req,res){
